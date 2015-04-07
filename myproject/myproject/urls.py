@@ -8,6 +8,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', "usersput.views.all"),
-    url(r'^car/(.*)$', "usersput.views.info"),
+    url(r'^id/(.*)$', "usersput.views.info"),
     url(r'^(.*)$', "usersput.views.notfound")
 )

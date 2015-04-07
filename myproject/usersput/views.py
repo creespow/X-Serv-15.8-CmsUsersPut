@@ -15,25 +15,25 @@ def all(request):
     cars_list = cars.objects.all()
     out = "<ul>\n"
     for fila in cars_list:
-        out += "<li><a href=/" + fila.model +  " > " + fila.model + "</a></li>\n"
+        out += "<li><a href=id/" + fila.model +  " > " + fila.model + "</a></li>\n"
     out += "</ul\n"
     out += login(request)
     return HttpResponse(out)
 
 @csrf_exempt
-def info (request, resource):
-    if request.method == 'GET':
-        cars_list = cars.objects.filter(model=resource)
-        if not cars_list:
-            return notfound (request, resource)
+def info (request, car):
+    if request.method == 'GET':        
         out = ""
-        for car in cars_list:
-            out += car.model + ": " + str(car.price) + " $"
+        try:
+            one_car = cars.objects.get(model = car)
+            out += one_car.model + ": " + str(one_car.price) + "$"
+        except:
+            out += "No cars, add to DB"
         out += login(request)
         return HttpResponse(out)
     elif request.method == 'PUT':
         if request.user.is_authenticated():
-            newCar = cars(model = resource, price = request.body)
+            newCar = cars(model = car, price = request.body)
             newCar.save()
             out = "Saved"
         else:
